@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">LoadInfo</string>
+    <string name="go_to_next">GO TO NEXT</string>
+    <string name="internet_fail_title">No Internet connection</string>
+    <string name="internet_fail_msg">Please check your mobile data or Wi-Fi.</string>
+    <string name="server_fail">Fail to connect to server</string>
+    <string name="retry">Retry</string>
+</resources>
