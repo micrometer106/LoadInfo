@@ -20,6 +20,7 @@ import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,7 @@ public class AlbumRecyclerViewAdapter extends RecyclerView.Adapter<AlbumRecycler
     private SparseArray<Bitmap> mCache;
     private boolean mIsNetWorkAvailable = true;
     private NetworkChangedReceiver mNetworkChangedReceiver;
+    private ExecutorService mExecutors;
 
     class AlbumViewHolder extends RecyclerView.ViewHolder {
         public ImageView mAlbumThumb;
@@ -50,6 +52,7 @@ public class AlbumRecyclerViewAdapter extends RecyclerView.Adapter<AlbumRecycler
         mList = list;
         mCache = new SparseArray<>();
         mNetworkChangedReceiver = new NetworkChangedReceiver();
+        mExecutors = Executors.newFixedThreadPool(NUMBER_OF_THREAD);
     }
 
     @Override
@@ -68,7 +71,7 @@ public class AlbumRecyclerViewAdapter extends RecyclerView.Adapter<AlbumRecycler
                 holder.mAlbumThumb.setTag(position);
                 if (mIsNetWorkAvailable) {
                     LoadThumbNailTask loadThumbNailTask = new LoadThumbNailTask(holder.mAlbumThumb, position);
-                    loadThumbNailTask.executeOnExecutor(Executors.newFixedThreadPool(NUMBER_OF_THREAD), data.getThumbnailUrl());
+                    loadThumbNailTask.executeOnExecutor(mExecutors, data.getThumbnailUrl());
                 }
             }
         }
